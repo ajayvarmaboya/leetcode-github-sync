@@ -70,3 +70,71 @@ Open GitHub
 Paste Code
    ↓
 Commit
+This process becomes repetitive as the number of solved problems increases.
+The goal of this project is to automate the entire workflow:
+                    ┌──────────────┐
+                    │   LeetCode   │
+                    └──────┬───────┘
+                           │
+                       Submit
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   Accepted   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                 ┌────────────────────┐
+                 │ Submission Detector│
+                 └─────────┬──────────┘
+                           │
+                           ▼
+                 ┌────────────────────┐
+                 │  Monaco Code       │
+                 │  Extraction        │
+                 └─────────┬──────────┘
+                           │
+                           ▼
+                 ┌────────────────────┐
+                 │  Chrome Extension  │
+                 │  Service Worker    │
+                 └─────────┬──────────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    GitHub    │
+                    │     API      │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   leetcode   │
+                    │  repository  │
+                    └──────────────┘
+
+
+🎯 Project Goals
+The primary goal is to build a reliable developer productivity tool that connects:
+- LeetCode
+- Chrome Extension APIs
+- Monaco Editor
+- GitHub
+- GitHub REST API
+The completed system will allow a developer to solve a problem on LeetCode and have the accepted solution automatically saved to GitHub without manually copying the code.
+
+| Technology | Purpose |
+|---|---|
+| JavaScript | Extension logic |
+| HTML | Popup/UI structure |
+| CSS | Extension UI styling |
+| Chrome Manifest V3 | Extension platform |
+| Chrome Content Scripts | LeetCode page interaction |
+| Chrome Service Worker | Background processing |
+| Chrome Runtime API | Component communication |
+| Chrome Storage API | Configuration and state |
+| Monaco Editor API | Source-code extraction |
+| `window.postMessage()` | MAIN-world ↔ isolated-world communication |
+| GitHub REST API | GitHub integration |
+| GitHub App / OAuth | Authentication |
+| Git | Version control |
+| GitHub Actions | Future CI/CD |
