@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "LeetCode GitHub Sync",
+  "version": "0.1.0",
+  "description": "Automatically sync accepted LeetCode solutions to GitHub.",
+
+  "permissions": [
+    "identity",
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://github.com/*",
+    "https://api.github.com/*",
+    "https://leetcode.com/*",
+    "http://localhost:8081/*"
+  ],
+
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  
+"content_scripts": [
+  {
+    "matches": ["https://leetcode.com/*"],
+    "js": ["src/content/monaco-bridge.js"],
+    "run_at": "document_idle",
+    "world": "MAIN"
+  },
+  {
+    "matches": ["https://leetcode.com/*"],
+    "js": [
+      "src/content/extractor.js",
+      "src/content/submission-detector.js",
+      "src/content/leetcode.js"
+    ],
+    "run_at": "document_idle",
+    "world": "ISOLATED"
+  }
+],
+
+
+  "action": {
+    "default_popup": "src/popup/popup.html"
+  }
+}

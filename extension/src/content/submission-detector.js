@@ -86,64 +86,42 @@ function checkSubmission() {
     waitingForSourceSubmission = submissionId;
 
 
-    const code = extractSourceCode();
+    const source = extractSourceCode();
 
-
-    /*
-     * Monaco source is not available yet.
-     *
-     * extractor.js will dispatch:
-     *
-     * "leetcode-source-ready"
-     *
-     * when the source becomes available.
-     */
-    if (!code) {
-
-        console.log(
-            "Waiting for Monaco source code..."
-        );
-
+    if (!source) {
+        console.log("Waiting for Monaco source code...");
         return;
     }
 
+    if (!source.language) {
+        waitingForSourceSubmission = null;
+        console.log("Programming language is not available yet.");
+        return;
+    }
 
-    /*
-     * Source code is available.
-     */
     waitingForSourceSubmission = null;
-
     lastDetectedSubmission = submissionId;
 
+    const segments = window.location.pathname
+        .split("/")
+        .filter(Boolean);
 
-    console.log(
-        "Source code successfully extracted."
-    );
+    const problemIndex = segments.indexOf("problems");
 
+    const problemSlug =
+        problemIndex >= 0
+            ? segments[problemIndex + 1]
+            : null;
 
-    console.log(
-        "Preparing submission message..."
-    );
-
-
-    /*
-     * Send submission to service worker.
-     */
     chrome.runtime.sendMessage({
-
-        type:
-            "LEETCODE_SUBMISSION_ACCEPTED",
-
+        type: "LEETCODE_SUBMISSION_ACCEPTED",
         payload: {
-
-            submissionId:
-                submissionId,
-
-            submissionUrl:
-                window.location.href,
-
-            code:
-                code
+            submissionId,
+            submissionUrl: window.location.href,
+            problemSlug,
+            code: source.code,
+            language: source.language,
+            lineCount: source.lineCount
         }
 
     });

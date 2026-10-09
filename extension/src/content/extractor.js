@@ -107,31 +107,22 @@ window.addEventListener("message", (event) => {
  *     string -> source code
  *     null   -> source code not available yet
  */
+
 function extractSourceCode() {
-
-    if (!latestMonacoSource) {
-
-        console.log(
-            "Monaco source code not available yet."
-        );
-
-        return null;
-    }
+    const source = getMonacoSource();
 
     if (
-        !latestMonacoSource.code ||
-        !latestMonacoSource.code.trim()
+        !source ||
+        !source.code ||
+        !source.code.trim()
     ) {
-
-        console.log(
-            "Monaco source code is empty."
-        );
-
+        console.log("Monaco source code not available yet.");
         return null;
     }
 
-    return latestMonacoSource.code;
+    return source;
 }
+
 
 
 /**
