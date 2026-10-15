@@ -56,6 +56,17 @@ function base64EncodeUtf8(text){
   return btoa(binary);
 }
 
+function base64DecodeUtf8(base64) {
+  const binary = atob(base64.replace(/\s/g, ""));
+  const bytes = Uint8Array.from(
+    binary,
+    (character) => character.charCodeAt(0)
+  );
+
+  return new TextDecoder("utf-8").decode(bytes);
+}
+
+
 
 async function saveSolution({
   owner,
@@ -93,6 +104,22 @@ async function saveSolution({
   try {
     const existing = await githubRequest(endpoint);
     payload.sha = existing.sha;
+
+    const existingCode = base64DecodeUtf8(existing.content);
+
+    if (existingCode === code) {
+      console.log(
+        "Solution unchanged. Skipping GitHub update:",
+        path
+      );
+
+      return {
+        skipped: true,
+        reason: "identical_content",
+        path,
+        html_url: existing.html_url
+      };
+    }
   } catch (error) {
     if (!error.message.includes("GitHub API 404")) {
       throw error;
